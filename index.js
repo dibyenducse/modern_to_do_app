@@ -8,7 +8,7 @@ app.use(express.json());
 
 //database connection with mongoose
 mongoose
-    .connect('mongodb://localhost/mordern_to_do_app', {})
+    .connect('mongodb://localhost/modern_to_do_app')
     .then(() => {
         console.log('connection sucessfull');
     })

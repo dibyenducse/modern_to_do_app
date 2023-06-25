@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const todoSchema = new mongoose.Schema({
+const todoSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -11,7 +11,7 @@ const todoSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'inactive'],
     },
-    data: {
+    date: {
         type: Date,
         default: Date.now,
     },
