@@ -1,7 +1,7 @@
 const express = require('express');
 const todoSchema = require('../schemas/todoSchema');
 const mongoose = require('mongoose');
-const Todo = new mongoose.model('Todo', todoSchema); //odm
+const Todo = new mongoose.model('Todo', todoSchema); //mongoose= Elegant Object Data Modeling
 
 const router = express.Router();
 //Get all the todos
@@ -14,10 +14,11 @@ router.get('/:id', async (req, res) => {});
 router.post('/', async (req, res) => {
     const newTodo = new Todo(req.body);
     await newTodo.save();
+    res.send('Data Listed on Database successfully');
 });
 
 //post multiple todo
-router.post('/', async (req, res) => {});
+router.post('/all', async (req, res) => {});
 
 //put todo update todo
 router.put('/', async (req, res) => {});

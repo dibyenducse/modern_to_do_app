@@ -17,12 +17,18 @@ mongoose
 //application routes
 app.use('/todo', todoHandler);
 
+//404 error handler
+app.use((req, res, next) => {
+    next('Requested url was not found');
+});
+
 //default error handler
 function errorHandler(err, req, res, next) {
+    console.log(err);
     if (res.headersent) {
         return next(err);
     }
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: err }).send('There was an error');
 }
 
 app.listen(3000, () => {
