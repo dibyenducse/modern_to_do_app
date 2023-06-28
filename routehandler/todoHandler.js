@@ -20,11 +20,30 @@ router.post('/', async (req, res) => {
 //post multiple todo
 router.post('/all', async (req, res) => {
     await Todo.insertMany(req.body);
+    console.log(Todo);
     res.send('Data Listed on Database successfully');
 });
 
 //put todo update todo
-router.put('/', async (req, res) => {});
+router.put('/:id', async (req, res) => {
+    await Todo.updateOne(
+        { _id: req.params.id },
+        {
+            $set: {
+                status: 'active',
+            },
+        },
+        (error, writeOpResult) => {
+            if (error) {
+                res.status(500).json({ error: 'There are error in server' });
+            } else {
+                res.status(200).json({
+                    message: 'Data was updated successfully',
+                });
+            }
+        }
+    );
+});
 
 //delete todo
 router.delete('/', async (req, res) => {});
