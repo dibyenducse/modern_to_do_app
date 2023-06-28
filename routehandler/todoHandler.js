@@ -18,7 +18,10 @@ router.post('/', async (req, res) => {
 });
 
 //post multiple todo
-router.post('/all', async (req, res) => {});
+router.post('/all', async (req, res) => {
+    await Todo.insertMany(req.body);
+    res.send('Data Listed on Database successfully');
+});
 
 //put todo update todo
 router.put('/', async (req, res) => {});
