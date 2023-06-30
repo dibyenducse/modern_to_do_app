@@ -63,23 +63,22 @@ router.post('/all', async (req, res) => {
 
 //put todo update todo
 router.put('/:id', async (req, res) => {
-    await Todo.updateOne(
-        { _id: req.params.id },
-        {
-            $set: {
-                status: 'active',
-            },
-        },
-        (error, writeOpResult) => {
-            if (error) {
-                res.status(500).json({ error: 'There are error in server' });
-            } else {
-                res.status(200).json({
-                    message: 'Data was updated successfully',
-                });
-            }
-        }
-    );
+    const id = req.params.id;
+    const upadateData = req.body;
+    try {
+        const updateDoc = await Todo.findByIdAndUpdate(id, upadateData, {
+            new: true,
+        });
+
+        res.status(200).json({
+            message: 'Data was updated successfully',
+        });
+
+        console.log(updateDoc);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'There are error in server' });
+    }
 });
 
 //delete todo
