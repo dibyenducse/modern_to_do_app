@@ -7,7 +7,12 @@ const router = express.Router();
 //Get all the todos
 router.get('/', async (req, res) => {
     try {
-        const result = await Todo.find({ status: 'active' });
+        const result = await Todo.find({ status: 'active' })
+            .select({
+                _id: 0,
+                data: 0,
+            })
+            .limit(2);
         res.status(200).json({
             result,
             message: 'Todo Found successfully',
@@ -19,7 +24,18 @@ router.get('/', async (req, res) => {
 });
 
 //Get a todo by id
-router.get('/:id', async (req, res) => {});
+router.get('/:id', async (req, res) => {
+    try {
+        const result = await Todo.find({ _id: req.params.id });
+        res.status(200).json({
+            result,
+            message: `${req.params.id} Found successfully`,
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+});
 
 //post a todo
 router.post('/', async (req, res) => {
