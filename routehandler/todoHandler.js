@@ -6,17 +6,16 @@ const Todo = mongoose.model('Todo', todoSchema); //mongoose= Elegant Object Data
 const router = express.Router();
 //Get all the todos
 router.get('/', async (req, res) => {
-    await Todo.find({ status: 'active' }, (err) => {
-        if (err) {
-            res.status(500).json({
-                error: 'There was an error',
-            });
-        } else {
-            res.status(200).json({
-                message: 'Todo inserted successfully',
-            });
-        }
-    });
+    try {
+        const result = await Todo.find({ status: 'active' });
+        res.status(200).json({
+            result,
+            message: 'Todo Found successfully',
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
 });
 
 //Get a todo by id
