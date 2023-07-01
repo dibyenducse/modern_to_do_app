@@ -5,24 +5,25 @@ const router = require('./todoHandler');
 const User = new mongoose.model('User', userSchema);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const dotenv =
-    //Sign Up
-    router.post('/signup', async (req, res) => {
-        try {
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+const dotenv = require('dotenv');
 
-            const newUser = User({
-                name: req.body.name,
-                username: req.body.username,
-                password: hashedPassword,
-            });
-            await newUser.save();
-            res.send('Signup was successfully');
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).json({ message: error.message });
-        }
-    });
+//Sign Up
+router.post('/signup', async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const newUser = User({
+            name: req.body.name,
+            username: req.body.username,
+            password: hashedPassword,
+        });
+        await newUser.save();
+        res.send('Signup was successfully');
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+});
 
 //Login
 router.post('/login', async (req, res) => {
@@ -39,7 +40,8 @@ router.post('/login', async (req, res) => {
                     username: user[0].username,
                     userId: user[0]._id,
                 },
-                'dffd'
+                //process.env.JWT_SECRET
+                '144'
             );
             res.status(200).json({
                 access_token: token,

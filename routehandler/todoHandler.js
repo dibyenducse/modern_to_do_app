@@ -2,19 +2,9 @@ const express = require('express');
 const todoSchema = require('../schemas/todoSchema');
 const mongoose = require('mongoose');
 const Todo = mongoose.model('Todo', todoSchema); //mongoose= Elegant Object Data Modeling
+const checkLogin = require('../middlewares/checkLogin');
 
 const router = express.Router();
-
-//Get active Todos
-router.get('/active', async (req, res) => {
-    try {
-        const todo = new Todo();
-        const data = await todo.findActive();
-        res.status(200).json({ data });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
 
 //Get all the todos
 router.get('/', async (req, res) => {
@@ -31,6 +21,17 @@ router.get('/', async (req, res) => {
         });
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+//Get active Todos
+router.get('/active', async (req, res) => {
+    try {
+        const todo = new Todo();
+        const data = await todo.findActive();
+        res.status(200).json({ data });
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
