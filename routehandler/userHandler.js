@@ -39,8 +39,7 @@ router.post('/login', async (req, res) => {
                     username: user[0].username,
                     userId: user[0]._id,
                 },
-                process.env.JWT_SECRET,
-                { expireIn: '1h' }
+                'dffd'
             );
             res.status(200).json({
                 access_token: token,
