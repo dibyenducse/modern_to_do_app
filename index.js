@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const todoHandler = require('./routehandler/todoHandler');
+const userHandler = require('./routehandler/userHandler');
 
 //express initialization
 const app = express();
@@ -16,6 +17,7 @@ mongoose
 
 //application routes
 app.use('/todo', todoHandler);
+app.use('/user', userHandler);
 
 //404 error handler
 app.use((req, res, next) => {
