@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const todoHandler = require('./routehandler/todoHandler');
 const userHandler = require('./routehandler/userHandler');
+const dotenv = require('dotenv');
 
 //express initialization
 const app = express();
+dotenv.config();
 app.use(express.json());
 
 //database connection with mongoose
