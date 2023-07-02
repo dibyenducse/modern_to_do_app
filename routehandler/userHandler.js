@@ -1,7 +1,7 @@
 const express = require('express');
 const userSchema = require('../schemas/userSchema');
 const mongoose = require('mongoose');
-const router = require('./todoHandler');
+const router = express.Router();
 const User = new mongoose.model('User', userSchema);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
