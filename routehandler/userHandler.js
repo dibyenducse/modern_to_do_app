@@ -44,8 +44,10 @@ router.post('/login', async (req, res) => {
                             username: user.username,
                             userId: user._id,
                         },
-                        // process.env.JWT_SECRET
-                        '144'
+                        process.env.JWT_SECRET,
+                        {
+                            expiresIn: '2 days',
+                        }
                     );
                     res.status(200).json({
                         access_token: token,
