@@ -18,7 +18,7 @@ router.post('/signup', async (req, res) => {
             password: hashedPassword,
         });
         await newUser.save();
-        res.send('Signup was successfully');
+        res.status(200).json({ message: 'Signup was successfully' });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
@@ -29,11 +29,12 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const user = await User.find({ username: req.body.username });
-        const isValidPassword = await bcrypt.compare(
-            req.body.password,
-            user[0].password
-        );
-        if (isValidPassword) {
+
+        if (user && user.length > 0) {
+            const isValidPassword = await bcrypt.compare(
+                req.body.password,
+                user[0].password
+            );
             //generate token
             const token = jwt.sign(
                 {
@@ -48,7 +49,10 @@ router.post('/login', async (req, res) => {
                 message: 'Logged in Successfully',
             });
         } else {
-            console.log('Authentication Failed');
+            console.log(error.message);
+            res.status(401).json({
+                error: 'Authentication Failed',
+            });
         }
     } catch (error) {
         console.log(error.message);
