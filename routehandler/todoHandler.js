@@ -28,7 +28,7 @@ router.get('/', checkLogin, async (req, res) => {
 });
 
 //Get active Todos
-router.get('/active', async (req, res) => {
+router.get('/active', checkLogin, async (req, res) => {
     try {
         const todo = new Todo();
         const data = await todo.findActive();
@@ -39,7 +39,7 @@ router.get('/active', async (req, res) => {
 });
 
 //Get a todo by id
-router.get('/:id', async (req, res) => {
+router.get('/:id', checkLogin, async (req, res) => {
     try {
         const result = await Todo.find({ _id: req.params.id });
         res.status(200).json({
@@ -53,7 +53,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //post a todo
-router.post('/', async (req, res) => {
+router.post('/', checkLogin, async (req, res) => {
     try {
         const newTodo = Todo(req.body);
         await newTodo.save();
@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
 });
 
 //post multiple todo
-router.post('/all', async (req, res) => {
+router.post('/all', checkLogin, async (req, res) => {
     try {
         await Todo.insertMany(req.body);
         console.log(Todo);
@@ -77,7 +77,7 @@ router.post('/all', async (req, res) => {
 });
 
 //put todo update todo
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkLogin, async (req, res) => {
     const id = req.params.id;
     const upadateData = req.body;
     try {
@@ -97,7 +97,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //delete todo
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkLogin, async (req, res) => {
     const id = req.params.id;
     try {
         const deletedDoc = await Todo.findByIdAndRemove(id);
