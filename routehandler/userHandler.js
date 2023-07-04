@@ -28,28 +28,38 @@ router.post('/signup', async (req, res) => {
 //Login
 router.post('/login', async (req, res) => {
     try {
-        const user = await User.find({ username: req.body.username });
+        const users = await User.find({ username: req.body.username });
 
-        if (user && user.length > 0) {
-            const isValidPassword = await bcrypt.compare(
-                req.body.password,
-                user[0].password
-            );
-            //generate token
-            const token = jwt.sign(
-                {
-                    username: user[0].username,
-                    userId: user[0]._id,
-                },
-                //process.env.JWT_SECRET
-                '144'
-            );
-            res.status(200).json({
-                access_token: token,
-                message: 'Logged in Successfully',
+        if (users && users.length > 0) {
+            for (const user of users) {
+                const isValidPassword = await bcrypt.compare(
+                    req.body.password,
+                    user.password
+                );
+
+                if (isValidPassword) {
+                    // Generate token
+                    const token = jwt.sign(
+                        {
+                            username: user.username,
+                            userId: user._id,
+                        },
+                        // process.env.JWT_SECRET
+                        '144'
+                    );
+                    res.status(200).json({
+                        access_token: token,
+                        message: 'Logged in Successfully',
+                    });
+                    return; // Exit the function after successful login
+                }
+            }
+            // If no matching password is found
+            res.status(401).json({
+                error: 'Authentication Failed',
             });
         } else {
-            console.log(error.message);
+            // If no user is found with the given username
             res.status(401).json({
                 error: 'Authentication Failed',
             });
