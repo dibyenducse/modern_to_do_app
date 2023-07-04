@@ -12,6 +12,7 @@ router.get('/', checkLogin, async (req, res) => {
     console.log(req.userId);
     try {
         const result = await Todo.find({ status: 'active' })
+            .populate('user', 'name username')
             .select({
                 _id: 0,
                 data: 0,
@@ -55,7 +56,7 @@ router.get('/:id', checkLogin, async (req, res) => {
 //post a todo
 router.post('/', checkLogin, async (req, res) => {
     try {
-        const newTodo = Todo(req.body);
+        const newTodo = Todo({ ...req.body, user: req.userId });
         await newTodo.save();
         res.send('Data Listed on Database successfully');
     } catch (error) {
