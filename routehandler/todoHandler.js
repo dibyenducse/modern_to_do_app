@@ -7,7 +7,9 @@ const checkLogin = require('../middlewares/checkLogin');
 const router = express.Router();
 
 //Get all the todos
-router.get('/', async (req, res) => {
+router.get('/', checkLogin, async (req, res) => {
+    console.log(req.username);
+    console.log(req.userId);
     try {
         const result = await Todo.find({ status: 'active' })
             .select({
