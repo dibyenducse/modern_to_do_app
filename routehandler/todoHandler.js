@@ -1,7 +1,9 @@
 const express = require('express');
 const todoSchema = require('../schemas/todoSchema');
+const userSchema = require('../schemas/userSchema');
 const mongoose = require('mongoose');
 const Todo = mongoose.model('Todo', todoSchema); //mongoose= Elegant Object Data Modeling
+const User = mongoose.model('User', userSchema);
 const checkLogin = require('../middlewares/checkLogin');
 
 const router = express.Router();
@@ -57,8 +59,20 @@ router.get('/:id', checkLogin, async (req, res) => {
 router.post('/', checkLogin, async (req, res) => {
     try {
         const newTodo = Todo({ ...req.body, user: req.userId });
-        await newTodo.save();
-        res.send('Data Listed on Database successfully');
+        const todo = await newTodo.save();
+        await User.updateOne(
+            {
+                _id: req.userId,
+            },
+            {
+                $push: {
+                    todos: todo._id,
+                },
+            }
+        );
+        res.status(200).json({
+            message: 'Todo was inserted successfully',
+        });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: error.message });
